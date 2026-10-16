@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+:root {
+    font-family: 'DM Sans', Arial, sans-serif;
+    color: #292b24;
+    background: #f7f2e9;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    --color-green: #0b4939;
+    --color-green-dark: #082f26;
+    --color-green-light: #49765e;
+    --color-cream: #f7f2e9;
+    --color-paper: #fffdf8;
+    --color-gold: #ddc49f;
+    --color-text: #292b24;
+    --color-muted: #6c6a5f;
+    --color-border: #e2d8c8;
+
+    --font-body: 'DM Sans', Arial, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+
+    --container-width: 1200px;
+    --section-space: clamp(56px, 8vw, 100px);
+    --radius-card: 22px;
+    --radius-button: 40px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+}
+
+body {
+    min-width: 320px;
+    margin: 0;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+    font-family: var(--font-body);
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+img,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+img {
+    height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+    font-size: inherit;
+}
+
+button:not(:disabled) {
+    cursor: pointer;
+}
+
+.site {
+    width: 100%;
+    overflow: clip;
+}
+
+main {
+    width: 100%;
+}
+
+.section {
+    padding: var(--section-space) 24px;
+    scroll-margin-top: 24px;
+}
+
+.section-inner {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+}
+
+:focus-visible {
+    outline: 2px solid #7ca487;
+    outline-offset: 4px;
+}
+
+::selection {
+    background: #d9e4d5;
+    color: var(--color-green-dark);
+}
+
+@media (max-width: 600px) {
+    .section {
+        padding: 56px 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
