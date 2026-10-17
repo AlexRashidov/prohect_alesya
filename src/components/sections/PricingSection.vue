@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { API_URL, createCheckout, type PaymentMethod } from '../../api'
+import { documents } from '../../siteConfig'
 
 const selectedMethod = ref<PaymentMethod>('ru')
 
@@ -226,7 +227,7 @@ const openPayment = async () => {
             <span>
               Я принимаю условия
               <a
-                  href="https://disk.yandex.ru/i/jop5s3l2ET0fZA"
+                  :href="documents.offer"
                   target="_blank"
                   rel="noopener noreferrer"
               >
@@ -244,7 +245,7 @@ const openPayment = async () => {
             <span>
               Я ознакомился(-ась) с
               <a
-                  href="https://disk.yandex.ru/i/Uh9dE3r1kTEW_w"
+                  :href="documents.privacy"
                   target="_blank"
                   rel="noopener noreferrer"
               >
@@ -262,7 +263,7 @@ const openPayment = async () => {
             <span>
               Я даю согласие на обработку персональных данных в соответствии с
               <a
-                  href="https://disk.yandex.ru/i/Nix9lBfg9JXptQ"
+                  :href="documents.consent"
                   target="_blank"
                   rel="noopener noreferrer"
               >

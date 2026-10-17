@@ -1,42 +1,34 @@
-# prohect_alesya
+# Лендинг «Таблетка от прокрастинации»
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue 3 + Vite + TypeScript. Одностраничный сайт с формой оплаты и переходом в Telegram-бот с тестом.
 
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Запуск
 
 ```sh
 npm install
+npm run dev      # разработка
+npm run build    # сборка в dist/ (с проверкой типов)
 ```
 
-### Compile and Hot-Reload for Development
+## Настройки
 
-```sh
-npm run dev
-```
+| Что | Где |
+|---|---|
+| Адрес сервера бота для оплаты | `.env.local` / `.env.production`: `VITE_API_URL=https://bot.example.ru` (образец — `.env.example`) |
+| Реквизиты продавца, ссылки на оферту, политику и согласие | `src/siteConfig.ts` |
+| Ссылка на бота | `QuizSection.vue`, `HowItWorksSection.vue`, `FinalCTASection.vue` |
+| Запасные ссылки на оплату (если `VITE_API_URL` пустой) | `PricingSection.vue`, `paymentUrls` |
 
-### Type-Check, Compile and Minify for Production
+## Оплата
 
-```sh
-npm run build
-```
+Форма отправляет данные покупателя на `POST {VITE_API_URL}/api/checkout` (сервер бота). Сервер создаёт заказ
+и возвращает ссылку на оплату: Т-Банк для карт РФ, Prodamus для иностранных карт. После оплаты платёжная система
+возвращает покупателя на `/?order=<id>`. Страница ждёт подтверждения и показывает кнопки перехода в закрытые
+группы (Telegram / ВК / Max). Ссылки на группы хранятся только на сервере бота и отдаются после оплаты.
+
+В настройках бота (`.env`) адрес сайта должен быть указан в `SITE_URL` и `CORS_ORIGINS`.
+
+## Деплой
+
+`npm run build` и выложить папку `dist/` на любой статический хостинг (nginx, GitHub Pages, Netlify и т. п.).
+Перед сборкой задай `VITE_API_URL` — он вшивается в сборку.

@@ -19,11 +19,13 @@
       <p>© {{ year }} Алисия Боске</p>
 
       <nav aria-label="Юридическая информация">
-        <a href="/privacy">Политика конфиденциальности</a>
-        <a href="/offer">Условия покупки</a>
-        <a href="/consent">Согласие на обработку данных</a>
+        <a :href="documents.privacy" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a>
+        <a :href="documents.offer" target="_blank" rel="noopener noreferrer">Договор оферты</a>
+        <a :href="documents.consent" target="_blank" rel="noopener noreferrer">Согласие на обработку данных</a>
       </nav>
     </div>
+
+    <p v-if="requisites" class="site-footer__requisites">{{ requisites }}</p>
 
     <p class="site-footer__disclaimer">
       Материал носит информационно-практический характер и не является
@@ -33,7 +35,19 @@
 </template>
 
 <script setup lang="ts">
+import { documents, seller } from '../../siteConfig'
+
 const year = new Date().getFullYear()
+
+const requisites = [
+  seller.name,
+  seller.inn && `ИНН ${seller.inn}`,
+  seller.ogrn && `ОГРНИП ${seller.ogrn}`,
+  seller.email,
+  seller.phone,
+]
+    .filter(Boolean)
+    .join(' · ')
 </script>
 
 <style scoped>
@@ -123,6 +137,13 @@ const year = new Date().getFullYear()
 .site-footer__bottom nav a:hover,
 .site-footer__top-link:hover {
   text-decoration: underline;
+}
+
+.site-footer__requisites {
+  margin: 20px 0 0;
+  color: #d9e4dc;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 .site-footer__disclaimer {
