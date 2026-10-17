@@ -1,5 +1,7 @@
 
 <script setup lang="ts">
+import heroPhoto from '../../assets/photos/alisia-hero.jpg'
+
 const scrollToPricing = () => {
   document.querySelector('#pricing')?.scrollIntoView({
     behavior: 'smooth',
@@ -76,8 +78,10 @@ const scrollToProgram = () => {
 
     <div class="hero__visual">
       <img
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=85"
-          alt="Портрет женщины"
+          :src="heroPhoto"
+          alt="Алисия Боске, автор «Таблетки от прокрастинации»"
+          width="960"
+          height="1280"
           fetchpriority="high"
       />
 
@@ -262,7 +266,7 @@ const scrollToProgram = () => {
   height: 100%;
   border-radius: 48% 48% 4px 4px;
   object-fit: cover;
-  object-position: center 35%;
+  object-position: center 22%;
 }
 
 .hero__image-caption {

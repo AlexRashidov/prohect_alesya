@@ -1,5 +1,7 @@
 
 <script setup lang="ts">
+import portrait from '../../assets/photos/alisia-thoughtful.jpg'
+
 const telegramUrl =
     'https://t.me/boske_tablet_prokrastination_bot?start=website'
 </script>
@@ -7,6 +9,15 @@ const telegramUrl =
 <template>
   <section class="final-cta section">
     <div class="final-cta__inner">
+      <img
+          class="final-cta__portrait"
+          :src="portrait"
+          alt="Алисия Боске"
+          width="960"
+          height="1280"
+          loading="lazy"
+      />
+
       <p class="eyebrow">Можно начать с малого</p>
 
       <h2>
@@ -55,6 +66,18 @@ const telegramUrl =
   max-width: 850px;
   margin: 0 auto;
   text-align: center;
+}
+
+.final-cta__portrait {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 22px;
+  border: 4px solid #fffdf8;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 22%;
+  box-shadow: 0 12px 30px rgba(41, 43, 36, 0.14);
 }
 
 .final-cta .eyebrow {

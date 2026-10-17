@@ -6,6 +6,7 @@ import HeroSection from './components/sections/HeroSection.vue'
 import RecognitionSection from './components/sections/RecognitionSection.vue'
 import AboutSection from './components/sections/AboutSection.vue'
 import MethodSection from './components/sections/MethodSection.vue'
+import AuthorSection from './components/sections/AuthorSection.vue'
 import ProgramSection from './components/sections/ProgramSection.vue'
 import QuizSection from './components/sections/QuizSection.vue'
 import PricingSection from './components/sections/PricingSection.vue'
@@ -38,6 +39,9 @@ const orderId = new URLSearchParams(window.location.search).get('order')
 
       <!-- Метод работы -->
       <MethodSection />
+
+      <!-- Об авторе -->
+      <AuthorSection />
 
       <!-- Состав продукта -->
       <ProgramSection />

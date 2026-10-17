@@ -1,12 +1,13 @@
 
 <script setup lang="ts">
+import StuckIllustration, { type StuckVariant } from '../ui/StuckIllustration.vue'
+
 interface RecognitionCard {
   number: string
   title: string
   description: string
   highlight: string
-  image: string
-  imageAlt: string
+  illustration: StuckVariant
 }
 
 
@@ -16,54 +17,42 @@ const cards: RecognitionCard[] = [
     title: 'Ты не понимаешь, с чего начать.',
     description: 'Ты собираешь информацию, планируешь и готовишься, но',
     highlight: 'не переходишь к действиям.',
-    image:
-        'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=400&q=80',
-    imageAlt: 'Блокнот с записями на рабочем столе',
+    illustration: 'start',
   },
   {
     number: '02',
     title: 'Задача кажется огромной.',
     description: 'Ты смотришь на весь объём работы и думаешь:',
     highlight: 'это слишком сложно.',
-    image:
-        'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=400&q=80',
-    imageAlt: 'Рабочее место',
+    illustration: 'volume',
   },
   {
     number: '03',
     title: 'Ты боишься сделать недостаточно хорошо.',
     description: 'Хочется сначала всё продумать, но',
     highlight: 'идеальный момент не наступает.',
-    image:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-    imageAlt: 'Женский портрет',
+    illustration: 'perfect',
   },
   {
     number: '04',
     title: 'Перед задачей становится тяжело.',
     description: 'Появляются тревога, раздражение или усталость, и',
     highlight: 'хочется отложить дело.',
-    image:
-        'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=400&q=80',
-    imageAlt: 'Спокойный пейзаж на рассвете',
+    illustration: 'state',
   },
   {
     number: '05',
     title: 'Ты постоянно отвлекаешься.',
     description: 'Начинаешь одно, переключаешься на другое и',
     highlight: 'теряешь нить работы.',
-    image:
-        'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80',
-    imageAlt: 'Рабочий стол с компьютером',
+    illustration: 'focus',
   },
   {
     number: '06',
     title: 'Ты откладываешь, даже когда дело важно.',
     description: 'Планы есть, желание что-то изменить тоже, но',
     highlight: 'перейти к действию трудно.',
-    image:
-        'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=400&q=80',
-    imageAlt: 'Светлое рабочее пространство',
+    illustration: 'delay',
   },
 ]
 </script>
@@ -99,11 +88,9 @@ const cards: RecognitionCard[] = [
               {{ card.number }}
             </span>
 
-            <img
+            <StuckIllustration
                 class="recognition-card__image"
-                :src="card.image"
-                :alt="card.imageAlt"
-                loading="lazy"
+                :variant="card.illustration"
             />
           </div>
 
