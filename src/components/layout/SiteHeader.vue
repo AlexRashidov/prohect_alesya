@@ -1,7 +1,13 @@
 
 <script setup lang="ts">
 const scrollToPricing = () => {
-  document.querySelector('#pricing')?.scrollIntoView({
+  const pricing = document.querySelector('#pricing')
+  if (!pricing) {
+    // На странице после оплаты блока с ценой нет — возвращаемся на главную.
+    window.location.href = '/#pricing'
+    return
+  }
+  pricing.scrollIntoView({
     behavior: 'smooth',
     block: 'start',
   })
