@@ -1,6 +1,7 @@
 
 <script setup lang="ts">
-const telegramUrl = '' // Вставим ссылку на Telegram-бота
+const telegramUrl =
+    'https://t.me/boske_tablet_prokrastination_bot?start=website'
 </script>
 
 <template>

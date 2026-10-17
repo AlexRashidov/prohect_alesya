@@ -11,13 +11,22 @@ import QuizSection from './components/sections/QuizSection.vue'
 import PricingSection from './components/sections/PricingSection.vue'
 import FAQSection from './components/sections/FAQSection.vue'
 import FinalCTASection from './components/sections/FinalCTASection.vue'
+import PaymentResultSection from './components/sections/PaymentResultSection.vue'
+
+// После оплаты платёжная система возвращает покупателя на сайт с параметром ?order=<номер заказа>.
+const orderId = new URLSearchParams(window.location.search).get('order')
 </script>
 
 <template>
   <div id="top" class="site">
     <SiteHeader />
 
-    <main>
+    <main v-if="orderId">
+      <!-- Страница после оплаты: статус и ссылки на закрытые группы -->
+      <PaymentResultSection :order-id="orderId" />
+    </main>
+
+    <main v-else>
       <!-- Первый экран -->
       <HeroSection />
 

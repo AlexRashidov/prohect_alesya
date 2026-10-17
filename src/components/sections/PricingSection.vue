@@ -1,25 +1,91 @@
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-type PaymentMethod = 'ru' | 'foreign'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { API_URL, createCheckout, type PaymentMethod } from '../../api'
 
 const selectedMethod = ref<PaymentMethod>('ru')
 
+const lastName = ref('')
+const firstName = ref('')
+const middleName = ref('')
+const email = ref('')
+const phone = ref('')
+
+const offerAccepted = ref(false)
+const privacyAcknowledged = ref(false)
+const personalDataConsent = ref(false)
+
+// Запасной вариант, если сервер бота не подключён (VITE_API_URL пустой):
+// статичные ссылки без автоматической выдачи доступа.
 const paymentUrls: Record<PaymentMethod, string> = {
   ru: 'https://paylink.tbank.ru/5251f857-b16e-4920-b890-e7e877766032',
-  foreign: '', // Добавим ссылку Prodamus после проверки
+  foreign: '', // Добавим ссылку Prodamus позже
 }
 
-const openPayment = () => {
+const isSubmitting = ref(false)
+const errorMessage = ref('')
+
+// Если покупатель вернулся со страницы оплаты кнопкой «Назад», снова разблокируем форму.
+const onPageShow = (event: PageTransitionEvent) => {
+  if (event.persisted) isSubmitting.value = false
+}
+onMounted(() => window.addEventListener('pageshow', onPageShow))
+onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
+
+const canPay = computed(() => {
+  return (
+      !isSubmitting.value &&
+      lastName.value.trim().length > 0 &&
+      firstName.value.trim().length > 0 &&
+      middleName.value.trim().length > 0 &&
+      email.value.trim().length > 0 &&
+      phone.value.trim().length > 0 &&
+      offerAccepted.value &&
+      privacyAcknowledged.value &&
+      personalDataConsent.value
+  )
+})
+
+const openStaticPayment = () => {
   const url = paymentUrls[selectedMethod.value]
 
   if (!url) {
-    window.alert('Ссылка на оплату пока не подключена. Пожалуйста, попробуйте позже.')
+    errorMessage.value =
+        'Оплата иностранной картой пока не подключена. Пожалуйста, выберите другой способ оплаты.'
     return
   }
 
   window.open(url, '_blank', 'noopener,noreferrer')
+}
+
+const openPayment = async () => {
+  if (!canPay.value) return
+  errorMessage.value = ''
+
+  if (!API_URL) {
+    openStaticPayment()
+    return
+  }
+
+  isSubmitting.value = true
+  try {
+    const { url } = await createCheckout({
+      method: selectedMethod.value,
+      lastName: lastName.value.trim(),
+      firstName: firstName.value.trim(),
+      middleName: middleName.value.trim(),
+      email: email.value.trim(),
+      phone: phone.value.trim(),
+      consents: offerAccepted.value && privacyAcknowledged.value && personalDataConsent.value,
+    })
+    // Переходим на страницу оплаты в этой же вкладке: после оплаты
+    // платёжная система вернёт покупателя на сайт со ссылками на группы.
+    window.location.href = url
+  } catch (error) {
+    errorMessage.value =
+        error instanceof Error ? error.message : 'Что-то пошло не так. Попробуйте ещё раз.'
+    isSubmitting.value = false
+  }
 }
 </script>
 
@@ -28,10 +94,12 @@ const openPayment = () => {
     <div class="section-inner pricing__layout">
       <div class="pricing__intro">
         <p class="eyebrow">Таблетка от прокрастинации</p>
+
         <h2 class="section-title">
           Твой следующий шаг<br />
           <em>начинается здесь</em>
         </h2>
+
         <p>
           Два практических урока, рабочая тетрадь и методичка —
           чтобы исследовать собственные трудности и попробовать другой
@@ -46,14 +114,77 @@ const openPayment = () => {
         </ul>
       </div>
 
-      <div class="pricing-card">
+      <form class="pricing-card" @submit.prevent="openPayment">
         <p class="pricing-card__eyebrow">Стоимость продукта</p>
+
         <div class="pricing-card__price">
           2 500 <span>₽</span>
         </div>
+
         <p class="pricing-card__description">
           Однократная оплата за доступ к материалам.
         </p>
+
+        <div class="pricing-card__divider"></div>
+
+        <p class="pricing-card__label">Данные покупателя</p>
+
+        <div class="buyer-fields">
+          <label class="field">
+            <span>Фамилия *</span>
+            <input
+                v-model="lastName"
+                type="text"
+                autocomplete="family-name"
+                placeholder="Иванов"
+                required
+            />
+          </label>
+
+          <label class="field">
+            <span>Имя *</span>
+            <input
+                v-model="firstName"
+                type="text"
+                autocomplete="given-name"
+                placeholder="Иван"
+                required
+            />
+          </label>
+
+          <label class="field">
+            <span>Отчество *</span>
+            <input
+                v-model="middleName"
+                type="text"
+                autocomplete="additional-name"
+                placeholder="Иванович"
+                required
+            />
+          </label>
+
+          <label class="field">
+            <span>Электронная почта *</span>
+            <input
+                v-model="email"
+                type="email"
+                autocomplete="email"
+                placeholder="name@example.com"
+                required
+            />
+          </label>
+
+          <label class="field">
+            <span>Телефон *</span>
+            <input
+                v-model="phone"
+                type="tel"
+                autocomplete="tel"
+                placeholder="+7 900 000-00-00"
+                required
+            />
+          </label>
+        </div>
 
         <div class="pricing-card__divider"></div>
 
@@ -85,15 +216,80 @@ const openPayment = () => {
           <span class="payment-option__check"></span>
         </label>
 
-        <button class="pricing-card__button" @click="openPayment">
-          Перейти к оплате <span aria-hidden="true">↗</span>
+        <div class="pricing-card__divider"></div>
+
+        <p class="pricing-card__label">Документы и согласия</p>
+
+        <div class="pricing-consents">
+          <label class="consent-option">
+            <input v-model="offerAccepted" type="checkbox" required />
+            <span>
+              Я принимаю условия
+              <a
+                  href="https://disk.yandex.ru/i/jop5s3l2ET0fZA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+              >
+                договора оферты
+              </a>.
+            </span>
+          </label>
+
+          <label class="consent-option">
+            <input
+                v-model="privacyAcknowledged"
+                type="checkbox"
+                required
+            />
+            <span>
+              Я ознакомился(-ась) с
+              <a
+                  href="https://disk.yandex.ru/i/Uh9dE3r1kTEW_w"
+                  target="_blank"
+                  rel="noopener noreferrer"
+              >
+                политикой конфиденциальности
+              </a>.
+            </span>
+          </label>
+
+          <label class="consent-option">
+            <input
+                v-model="personalDataConsent"
+                type="checkbox"
+                required
+            />
+            <span>
+              Я даю согласие на обработку персональных данных в соответствии с
+              <a
+                  href="https://disk.yandex.ru/i/Nix9lBfg9JXptQ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+              >
+                документом о согласии
+              </a>.
+            </span>
+          </label>
+        </div>
+
+        <button
+            class="pricing-card__button"
+            type="submit"
+            :disabled="!canPay"
+        >
+          {{ isSubmitting ? 'Создаём заказ…' : 'Перейти к оплате' }}
+          <span aria-hidden="true">↗</span>
         </button>
 
-        <p class="pricing-card__legal">
-          Перед оплатой ознакомься с условиями покупки и политикой
-          обработки персональных данных.
+        <p v-if="errorMessage" class="pricing-card__error" role="alert">
+          {{ errorMessage }}
         </p>
-      </div>
+
+        <p class="pricing-card__legal">
+          Поля со звёздочкой обязательны для заполнения.
+          Перед оплатой ознакомься с документами по ссылкам выше.
+        </p>
+      </form>
     </div>
   </section>
 </template>
@@ -150,6 +346,7 @@ const openPayment = () => {
 }
 
 .pricing-card {
+  min-width: 0;
   padding: 30px;
   border: 1px solid #e2d0b4;
   border-radius: 26px;
@@ -192,6 +389,42 @@ const openPayment = () => {
   margin: 0 0 14px;
   font-size: 13px;
   font-weight: 700;
+}
+
+.buyer-fields {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+  color: #45453c;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 13px;
+  border: 1px solid #e5ddcf;
+  border-radius: 10px;
+  background: #fff;
+  color: #292b24;
+  font: inherit;
+  font-weight: 400;
+}
+
+.field input::placeholder {
+  color: #a29e93;
+}
+
+.field input:focus {
+  outline: 2px solid #477b61;
+  outline-offset: 2px;
+  border-color: #477b61;
 }
 
 .payment-option {
@@ -261,6 +494,39 @@ const openPayment = () => {
   outline-offset: 3px;
 }
 
+.pricing-consents {
+  display: grid;
+  gap: 14px;
+}
+
+.consent-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #5e5b51;
+  font-size: 12px;
+  line-height: 1.7;
+  cursor: pointer;
+}
+
+.consent-option input {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  margin-top: 3px;
+  accent-color: #0b4939;
+}
+
+.consent-option a {
+  color: #0b4939;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.consent-option a:hover {
+  color: #17644e;
+}
+
 .pricing-card__button {
   display: flex;
   width: 100%;
@@ -276,10 +542,26 @@ const openPayment = () => {
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  transition: background 160ms ease, opacity 160ms ease;
 }
 
-.pricing-card__button:hover {
+.pricing-card__button:hover:not(:disabled) {
   background: #17644e;
+}
+
+.pricing-card__button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pricing-card__error {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fbeae5;
+  color: #8a2f1d;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .pricing-card__legal {
