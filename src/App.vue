@@ -3,7 +3,6 @@ import SiteHeader from './components/layout/SiteHeader.vue'
 import SiteFooter from './components/layout/SiteFooter.vue'
 
 import HeroSection from './components/sections/HeroSection.vue'
-import RecognitionSection from './components/sections/RecognitionSection.vue'
 import AboutSection from './components/sections/AboutSection.vue'
 import MethodSection from './components/sections/MethodSection.vue'
 import AuthorSection from './components/sections/AuthorSection.vue'
@@ -30,9 +29,6 @@ const orderId = new URLSearchParams(window.location.search).get('order')
     <main v-else>
       <!-- Первый экран -->
       <HeroSection />
-
-      <!-- Узнавание проблемы -->
-      <RecognitionSection />
 
       <!-- Почему трудно действовать -->
       <AboutSection />
