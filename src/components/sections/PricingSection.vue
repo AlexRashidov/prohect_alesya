@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { API_URL, createCheckout, type PaymentMethod } from '../../api'
+import { API_URL, createCheckout, telegramId, type PaymentMethod } from '../../api'
 import { documents } from '../../siteConfig'
 
 const selectedMethod = ref<PaymentMethod>('ru')
@@ -78,6 +78,7 @@ const openPayment = async () => {
       email: email.value.trim(),
       phone: phone.value.trim(),
       consents: offerAccepted.value && privacyAcknowledged.value && personalDataConsent.value,
+      telegramId,
     })
     // Переходим на страницу оплаты в этой же вкладке: после оплаты
     // платёжная система вернёт покупателя на сайт со ссылками на группы.

@@ -6,6 +6,30 @@ export const API_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/+$/, '')
 
 export type PaymentMethod = 'ru' | 'foreign'
 
+// Telegram ID покупателя из ссылки «Купить» в боте (?tg=123). По нему бот после оплаты на сайте
+// выдаёт материалы и перестаёт присылать продающие сообщения. Храним до конца сессии вкладки,
+// чтобы ID не потерялся при перезагрузке страницы.
+const TG_KEY = 'tg_id'
+
+function readTelegramId(): string | null {
+  const fromUrl = new URLSearchParams(window.location.search).get('tg')
+  if (fromUrl && /^\d{1,15}$/.test(fromUrl)) {
+    try {
+      sessionStorage.setItem(TG_KEY, fromUrl)
+    } catch {
+      // хранилище недоступно (приватный режим) — ID всё равно есть в адресе
+    }
+    return fromUrl
+  }
+  try {
+    return sessionStorage.getItem(TG_KEY)
+  } catch {
+    return null
+  }
+}
+
+export const telegramId = readTelegramId()
+
 export interface CheckoutRequest {
   method: PaymentMethod
   lastName: string
@@ -14,6 +38,7 @@ export interface CheckoutRequest {
   email: string
   phone: string
   consents: boolean
+  telegramId?: string | null
 }
 
 export interface CheckoutResponse {

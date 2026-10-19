@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { nextTick, onMounted } from 'vue'
 import SiteHeader from './components/layout/SiteHeader.vue'
 import SiteFooter from './components/layout/SiteFooter.vue'
 
@@ -14,6 +15,19 @@ import PaymentResultSection from './components/sections/PaymentResultSection.vue
 
 // После оплаты платёжная система возвращает покупателя на сайт с параметром ?order=<номер заказа>.
 const orderId = new URLSearchParams(window.location.search).get('order')
+
+// Кнопка «Купить» в боте ведёт на /#pricing. Страница рисуется после загрузки,
+// поэтому браузер сам до блока не долистывает — прокручиваем вручную.
+onMounted(() => {
+  if (orderId || !window.location.hash) return
+  nextTick(() => {
+    try {
+      document.querySelector(window.location.hash)?.scrollIntoView({ block: 'start' })
+    } catch {
+      // некорректный якорь в адресе — остаёмся наверху
+    }
+  })
+})
 </script>
 
 <template>
