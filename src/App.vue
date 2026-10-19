@@ -7,7 +7,6 @@ import AboutSection from './components/sections/AboutSection.vue'
 import MethodSection from './components/sections/MethodSection.vue'
 import AuthorSection from './components/sections/AuthorSection.vue'
 import ProgramSection from './components/sections/ProgramSection.vue'
-import QuizSection from './components/sections/QuizSection.vue'
 import PricingSection from './components/sections/PricingSection.vue'
 import FAQSection from './components/sections/FAQSection.vue'
 import FinalCTASection from './components/sections/FinalCTASection.vue'
@@ -41,9 +40,6 @@ const orderId = new URLSearchParams(window.location.search).get('order')
 
       <!-- Состав продукта -->
       <ProgramSection />
-
-      <!-- Квиз и переход в Telegram-бот -->
-      <QuizSection />
 
       <!-- Стоимость и оплата -->
       <PricingSection />

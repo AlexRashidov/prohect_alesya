@@ -2,8 +2,12 @@
 <script setup lang="ts">
 import portrait from '../../assets/photos/alisia-thoughtful.jpg'
 
-const telegramUrl =
-    'https://t.me/boske_tablet_prokrastination_bot?start=website'
+const scrollToPricing = () => {
+  document.querySelector('#pricing')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  })
+}
 </script>
 
 <template>
@@ -30,27 +34,17 @@ const telegramUrl =
         с практическим подходом к работе с прокрастинацией.
       </p>
 
-      <a
-          v-if="telegramUrl"
+      <button
           class="final-cta__button"
-          :href="telegramUrl"
-          target="_blank"
-          rel="noopener noreferrer"
+          type="button"
+          @click="scrollToPricing"
       >
-        Пройти тест в Telegram
+        Купить за 2 500 ₽
         <span aria-hidden="true">↗</span>
-      </a>
-
-      <span
-          v-else
-          class="final-cta__button final-cta__button--disabled"
-          aria-disabled="true"
-      >
-        Ссылка на бота появится здесь
-      </span>
+      </button>
 
       <p class="final-cta__price">
-        «Таблетка от прокрастинации» · 2 500 ₽
+        «Таблетка от прокрастинации» · 2 урока, рабочая тетрадь и методичка
       </p>
     </div>
   </section>
@@ -122,14 +116,12 @@ const telegramUrl =
   transition: background 180ms ease;
 }
 
-a.final-cta__button:hover {
-  background: #17644e;
+.final-cta__button {
+  cursor: pointer;
 }
 
-.final-cta__button--disabled {
-  background: #d5d0c3;
-  color: #625e53;
-  cursor: not-allowed;
+.final-cta__button:hover {
+  background: #17644e;
 }
 
 .final-cta__price {

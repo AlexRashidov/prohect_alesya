@@ -18,8 +18,8 @@ const observations = [
   },
 ]
 
-const scrollToQuiz = () => {
-  document.querySelector('#quiz')?.scrollIntoView({
+const scrollToProgram = () => {
+  document.querySelector('#program')?.scrollIntoView({
     behavior: 'smooth',
     block: 'start',
   })
@@ -49,14 +49,14 @@ const scrollToQuiz = () => {
         <button
             class="about__button"
             type="button"
-            @click="scrollToQuiz"
+            @click="scrollToProgram"
         >
-          Пройти тест
+          Посмотреть, что внутри
           <span aria-hidden="true">↗</span>
         </button>
 
         <p class="about__disclaimer">
-          Тест поможет исследовать привычные способы поведения.
+          Материал помогает исследовать привычные способы поведения.
           Это не психологическая диагностика.
         </p>
       </div>
