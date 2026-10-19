@@ -20,7 +20,7 @@ const personalDataConsent = ref(false)
 // статичные ссылки без автоматической выдачи доступа.
 const paymentUrls: Record<PaymentMethod, string> = {
   ru: 'https://paylink.tbank.ru/5251f857-b16e-4920-b890-e7e877766032',
-  foreign: '', // Добавим ссылку Prodamus позже
+  foreign: 'https://alisiabosque.payform.ru',
 }
 
 const isSubmitting = ref(false)
