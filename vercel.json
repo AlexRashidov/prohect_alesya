@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/(offer|privacy|consent|marketing-consent)", "destination": "/index.html" }
+  ]
+}

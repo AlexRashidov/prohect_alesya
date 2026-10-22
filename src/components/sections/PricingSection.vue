@@ -1,10 +1,12 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { API_URL, createCheckout, telegramId, type PaymentMethod } from '../../api'
+import { API_URL, createCheckout, telegramId } from '../../api'
 import { documents } from '../../siteConfig'
 
-const selectedMethod = ref<PaymentMethod>('ru')
+// Вся оплата идёт через Prodamus: на его странице есть карты РФ, зарубежные карты, СБП и рассрочка.
+// На сервере бота Prodamus — это способ оплаты 'foreign'.
+const PRODAMUS_METHOD = 'foreign'
 
 const lastName = ref('')
 const firstName = ref('')
@@ -15,13 +17,12 @@ const phone = ref('')
 const offerAccepted = ref(false)
 const privacyAcknowledged = ref(false)
 const personalDataConsent = ref(false)
+// Согласие на рекламную рассылку — по закону добровольное, оплату не блокирует.
+const marketingConsent = ref(false)
 
 // Запасной вариант, если сервер бота не подключён (VITE_API_URL пустой):
-// статичные ссылки без автоматической выдачи доступа.
-const paymentUrls: Record<PaymentMethod, string> = {
-  ru: 'https://paylink.tbank.ru/5251f857-b16e-4920-b890-e7e877766032',
-  foreign: 'https://alisiabosque.payform.ru',
-}
+// обычная форма Prodamus без автоматической выдачи доступа.
+const STATIC_PAYMENT_URL = 'https://alisiabosque.payform.ru'
 
 const isSubmitting = ref(false)
 const errorMessage = ref('')
@@ -48,15 +49,7 @@ const canPay = computed(() => {
 })
 
 const openStaticPayment = () => {
-  const url = paymentUrls[selectedMethod.value]
-
-  if (!url) {
-    errorMessage.value =
-        'Оплата иностранной картой пока не подключена. Пожалуйста, выберите другой способ оплаты.'
-    return
-  }
-
-  window.open(url, '_blank', 'noopener,noreferrer')
+  window.open(STATIC_PAYMENT_URL, '_blank', 'noopener,noreferrer')
 }
 
 const openPayment = async () => {
@@ -71,13 +64,14 @@ const openPayment = async () => {
   isSubmitting.value = true
   try {
     const { url } = await createCheckout({
-      method: selectedMethod.value,
+      method: PRODAMUS_METHOD,
       lastName: lastName.value.trim(),
       firstName: firstName.value.trim(),
       middleName: middleName.value.trim(),
       email: email.value.trim(),
       phone: phone.value.trim(),
       consents: offerAccepted.value && privacyAcknowledged.value && personalDataConsent.value,
+      marketingConsent: marketingConsent.value,
       telegramId,
     })
     // Переходим на страницу оплаты в этой же вкладке: после оплаты
@@ -190,33 +184,15 @@ const openPayment = async () => {
 
         <div class="pricing-card__divider"></div>
 
-        <p class="pricing-card__label">Выбери способ оплаты</p>
+        <p class="pricing-card__label">Способ оплаты</p>
 
-        <label
-            class="payment-option"
-            :class="{ 'payment-option--selected': selectedMethod === 'ru' }"
-        >
-          <input v-model="selectedMethod" type="radio" value="ru" />
+        <div class="payment-option payment-option--selected">
           <span class="payment-option__icon">₽</span>
           <span class="payment-option__text">
-            <strong>Карта РФ</strong>
-            <small>Оплата российской картой</small>
+            <strong>Банковская карта или СБП</strong>
+            <small>Карты РФ и зарубежные карты, СБП, рассрочка — на защищённой странице Prodamus</small>
           </span>
-          <span class="payment-option__check"></span>
-        </label>
-
-        <label
-            class="payment-option"
-            :class="{ 'payment-option--selected': selectedMethod === 'foreign' }"
-        >
-          <input v-model="selectedMethod" type="radio" value="foreign" />
-          <span class="payment-option__icon">€</span>
-          <span class="payment-option__text">
-            <strong>Иностранная карта</strong>
-            <small>Через платёжную страницу</small>
-          </span>
-          <span class="payment-option__check"></span>
-        </label>
+        </div>
 
         <div class="pricing-card__divider"></div>
 
@@ -270,6 +246,21 @@ const openPayment = async () => {
               >
                 документом о согласии
               </a>.
+            </span>
+          </label>
+
+          <label class="consent-option">
+            <input v-model="marketingConsent" type="checkbox" />
+            <span>
+              Я согласен(-на) получать
+              <a
+                  :href="documents.marketing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+              >
+                рекламную и информационную рассылку
+              </a>
+              (необязательно).
             </span>
           </label>
         </div>

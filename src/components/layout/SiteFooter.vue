@@ -2,7 +2,7 @@
 <template>
   <footer class="site-footer">
     <div class="site-footer__top">
-      <a class="site-footer__brand" href="#" aria-label="На главную">
+      <a class="site-footer__brand" href="/" aria-label="На главную">
         <span class="site-footer__monogram">АБ</span>
         <span>
           <strong>Алисия Боске</strong>
@@ -22,6 +22,7 @@
         <a :href="documents.privacy" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a>
         <a :href="documents.offer" target="_blank" rel="noopener noreferrer">Договор оферты</a>
         <a :href="documents.consent" target="_blank" rel="noopener noreferrer">Согласие на обработку данных</a>
+        <a :href="documents.marketing" target="_blank" rel="noopener noreferrer">Согласие на рассылку</a>
       </nav>
     </div>
 

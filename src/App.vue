@@ -12,14 +12,20 @@ import PricingSection from './components/sections/PricingSection.vue'
 import FAQSection from './components/sections/FAQSection.vue'
 import FinalCTASection from './components/sections/FinalCTASection.vue'
 import PaymentResultSection from './components/sections/PaymentResultSection.vue'
+import LegalPageSection from './components/sections/LegalPageSection.vue'
+import { findLegalDocument } from './legal/documents'
 
 // После оплаты платёжная система возвращает покупателя на сайт с параметром ?order=<номер заказа>.
 const orderId = new URLSearchParams(window.location.search).get('order')
 
+// Документы — отдельные страницы: /offer, /privacy, /consent, /marketing-consent.
+const legalDocument = findLegalDocument(window.location.pathname)
+if (legalDocument) document.title = `${legalDocument.title} — Алисия Боске`
+
 // Кнопка «Купить» в боте ведёт на /#pricing. Страница рисуется после загрузки,
 // поэтому браузер сам до блока не долистывает — прокручиваем вручную.
 onMounted(() => {
-  if (orderId || !window.location.hash) return
+  if (orderId || legalDocument || !window.location.hash) return
   nextTick(() => {
     try {
       document.querySelector(window.location.hash)?.scrollIntoView({ block: 'start' })
@@ -37,6 +43,11 @@ onMounted(() => {
     <main v-if="orderId">
       <!-- Страница после оплаты: статус и ссылки на закрытые группы -->
       <PaymentResultSection :order-id="orderId" />
+    </main>
+
+    <main v-else-if="legalDocument">
+      <!-- Страница документа: оферта, политика, согласия -->
+      <LegalPageSection :document="legalDocument" />
     </main>
 
     <main v-else>

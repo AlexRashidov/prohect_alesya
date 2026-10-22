@@ -38,6 +38,7 @@ export interface CheckoutRequest {
   email: string
   phone: string
   consents: boolean
+  marketingConsent?: boolean
   telegramId?: string | null
 }
 
