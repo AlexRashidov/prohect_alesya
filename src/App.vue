@@ -7,6 +7,7 @@ import HeroSection from './components/sections/HeroSection.vue'
 import AboutSection from './components/sections/AboutSection.vue'
 import MethodSection from './components/sections/MethodSection.vue'
 import AuthorSection from './components/sections/AuthorSection.vue'
+import ReviewSection from './components/sections/ReviewSection.vue'
 import ProgramSection from './components/sections/ProgramSection.vue'
 import PricingSection from './components/sections/PricingSection.vue'
 import FAQSection from './components/sections/FAQSection.vue'
@@ -62,6 +63,9 @@ onMounted(() => {
 
       <!-- Об авторе -->
       <AuthorSection />
+
+      <!-- Отзыв участницы -->
+      <ReviewSection />
 
       <!-- Состав продукта -->
       <ProgramSection />

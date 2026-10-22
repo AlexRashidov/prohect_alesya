@@ -15,7 +15,6 @@ const email = ref('')
 const phone = ref('')
 
 const offerAccepted = ref(false)
-const privacyAcknowledged = ref(false)
 const personalDataConsent = ref(false)
 // Согласие на рекламную рассылку — по закону добровольное, оплату не блокирует.
 const marketingConsent = ref(false)
@@ -43,7 +42,6 @@ const canPay = computed(() => {
       email.value.trim().length > 0 &&
       phone.value.trim().length > 0 &&
       offerAccepted.value &&
-      privacyAcknowledged.value &&
       personalDataConsent.value
   )
 })
@@ -70,7 +68,7 @@ const openPayment = async () => {
       middleName: middleName.value.trim(),
       email: email.value.trim(),
       phone: phone.value.trim(),
-      consents: offerAccepted.value && privacyAcknowledged.value && personalDataConsent.value,
+      consents: offerAccepted.value && personalDataConsent.value,
       marketingConsent: marketingConsent.value,
       telegramId,
     })
@@ -202,32 +200,14 @@ const openPayment = async () => {
           <label class="consent-option">
             <input v-model="offerAccepted" type="checkbox" required />
             <span>
-              Я принимаю условия
+              Выражаю согласие и принимаю положения
               <a
                   :href="documents.offer"
                   target="_blank"
                   rel="noopener noreferrer"
               >
-                договора оферты
-              </a>.
-            </span>
-          </label>
-
-          <label class="consent-option">
-            <input
-                v-model="privacyAcknowledged"
-                type="checkbox"
-                required
-            />
-            <span>
-              Я ознакомился(-ась) с
-              <a
-                  :href="documents.privacy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-              >
-                политикой конфиденциальности
-              </a>.
+                публичной оферты
+              </a>
             </span>
           </label>
 
@@ -238,29 +218,29 @@ const openPayment = async () => {
                 required
             />
             <span>
-              Я даю согласие на обработку персональных данных в соответствии с
+              Я даю согласие на обработку персональных данных на условиях
               <a
                   :href="documents.consent"
                   target="_blank"
                   rel="noopener noreferrer"
               >
-                документом о согласии
-              </a>.
+                Согласия на обработку персональных данных
+              </a>
+              и подтверждаю, что ознакомлен(а)
             </span>
           </label>
 
           <label class="consent-option">
             <input v-model="marketingConsent" type="checkbox" />
             <span>
-              Я согласен(-на) получать
+              Я согласен(на) получать рекламные сообщения на условиях
               <a
                   :href="documents.marketing"
                   target="_blank"
                   rel="noopener noreferrer"
               >
-                рекламную и информационную рассылку
+                Согласия на получение рекламной рассылки
               </a>
-              (необязательно).
             </span>
           </label>
         </div>
