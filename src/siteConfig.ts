@@ -20,7 +20,7 @@ export const documents = {
   offer: '/offer',
   privacy: '/privacy',
   consent: '/consent',
-  marketing: '/marketing-consent',
+  marketing: '/marketing_consent',
   /** Согласие на распр отзывы.docx */
   reviews: '/reviews',
 }
