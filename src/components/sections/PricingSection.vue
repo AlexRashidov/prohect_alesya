@@ -200,13 +200,13 @@ const openPayment = async () => {
           <label class="consent-option">
             <input v-model="offerAccepted" type="checkbox" required />
             <span>
-              Выражаю согласие и принимаю положения
+              Выражаю согласие и принимаю условия
               <a
                   :href="documents.offer"
                   target="_blank"
                   rel="noopener noreferrer"
               >
-                публичной оферты
+                Договора
               </a>
             </span>
           </label>
@@ -239,7 +239,7 @@ const openPayment = async () => {
                   target="_blank"
                   rel="noopener noreferrer"
               >
-                Согласия на получение рекламной рассылки
+                Рекламы
               </a>
             </span>
           </label>

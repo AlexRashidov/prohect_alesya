@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(offer|privacy|consent|marketing-consent)", "destination": "/index.html" }
+    { "source": "/(offer|privacy|consent|marketing-consent|reviews)", "destination": "/index.html" }
   ]
 }

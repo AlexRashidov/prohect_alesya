@@ -19,11 +19,11 @@
       <p>© {{ year }} Алисия Боске</p>
 
       <nav aria-label="Юридическая информация">
-        <a :href="documents.privacy" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a>
-        <a :href="documents.offer" target="_blank" rel="noopener noreferrer">Договор оферты</a>
-        <a :href="documents.consent" target="_blank" rel="noopener noreferrer">Согласие на обработку данных</a>
-        <a :href="documents.marketing" target="_blank" rel="noopener noreferrer">Согласие на рассылку</a>
-        <a :href="documents.reviews" target="_blank" rel="noopener noreferrer">Согласие на публикацию отзывов</a>
+        <a :href="documents.privacy" target="_blank" rel="noopener noreferrer">Политика</a>
+        <a :href="documents.offer" target="_blank" rel="noopener noreferrer">Договор</a>
+        <a :href="documents.consent" target="_blank" rel="noopener noreferrer">Согласие на обработку персональных данных</a>
+        <a :href="documents.marketing" target="_blank" rel="noopener noreferrer">Реклама</a>
+        <a :href="documents.reviews" target="_blank" rel="noopener noreferrer">Согласие на распространение разрешённых субъектом персональных данных</a>
       </nav>
     </div>
 
