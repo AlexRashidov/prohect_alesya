@@ -23,6 +23,7 @@
         <a :href="documents.offer" target="_blank" rel="noopener noreferrer">Договор оферты</a>
         <a :href="documents.consent" target="_blank" rel="noopener noreferrer">Согласие на обработку данных</a>
         <a :href="documents.marketing" target="_blank" rel="noopener noreferrer">Согласие на рассылку</a>
+        <a :href="documents.advertising" target="_blank" rel="noopener noreferrer">Реклама</a>
       </nav>
     </div>
 

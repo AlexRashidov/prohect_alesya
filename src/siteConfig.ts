@@ -21,4 +21,6 @@ export const documents = {
   privacy: '/privacy',
   consent: '/consent',
   marketing: '/marketing-consent',
+  /** Реклама.docx — внешний документ на Яндекс Диске */
+  advertising: 'https://disk.yandex.ru/i/EKMBr3_MqC9f7Q',
 }

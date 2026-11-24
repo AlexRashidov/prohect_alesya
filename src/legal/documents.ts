@@ -19,7 +19,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     "slug": "offer",
     "title": "Публичная оферта",
-    "sourceUrl": "https://disk.yandex.ru/i/jop5s3l2ET0fZA",
+    "sourceUrl": "https://disk.yandex.ru/i/AIlnODZu1p-YQg",
     "blocks": [
       {
         "kind": "h",
@@ -858,7 +858,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     "slug": "privacy",
     "title": "Политика в отношении обработки персональных данных",
-    "sourceUrl": "https://disk.yandex.ru/i/Uh9dE3r1kTEW_w",
+    "sourceUrl": "https://disk.yandex.ru/i/nHnD4GMtv0ifGA",
     "blocks": [
       {
         "kind": "h",
@@ -1337,7 +1337,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     "slug": "consent",
     "title": "Согласие на обработку персональных данных, публикацию отзывов и персональных данных в отзывах",
-    "sourceUrl": "https://disk.yandex.ru/i/Nix9lBfg9JXptQ",
+    "sourceUrl": "https://disk.yandex.ru/i/U38txseYo87eAg",
     "blocks": [
       {
         "kind": "p",
